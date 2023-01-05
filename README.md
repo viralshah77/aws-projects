@@ -155,3 +155,163 @@ Congratulations! You have successfully created your first custom event. We will 
 Process only orders from locations in the EU (eu-west or eu-east) using a AWS Step Functions target (OrderProcessing). In this use case, we are demonstrating how a Step Function execution can be triggered to process orders as they are published by the Orders bus.
 
 ## Step 1: Implement an EventBridge rule to target Step Functions
+
+Use the EventBridge Console to:
+1. Add a rule to the Orders event bus with the name EUOrdersRule
+2. Define an event pattern to match events with a detail location in eu-west or eu-east
+3. Target the OrderProcessing Step Functions state machine
+
+## Step 2: Send test EU Orders eventsHeader anchor link
+Using the Event Generator, send the following Order Notification events from the source com.aws.orders:
+
+{ "category": "office-supplies", "value": 300, "location": "eu-west" }
+{ "category": "tech-supplies", "value": 3000, "location": "eu-east" }
+
+## Step 3: Verify Step Functions workflow executionHeader anchor link
+If the event sent to the Orders event bus matches the pattern in your rule, then the event will be sent to the OrderProcessing Step Functions state machine for execution.
+
+1. Open the AWS Management Console for Step Functions  in a new tab or window, so you can keep this step-by-step guide open.
+2. On the Step Functions homepage, open the left hand navigation and select State machines.
+3. Enter OrderProcessing in the Search for state machines box and verify the state machine execution has succeeded.
+
+The Step Functions state machine will publish an OrderProcessed event back to the Orders event bus, using a new Service Integration for EventBridge which provides a simpler solution for producing events during a workflow execution. We will make use of this event later in the workshop. If you would like to see more detail on the workflow execution, select OrderProcessing from the list of state machines, and then select the workflow execution from the list.
+
+*Congratulations! You have successfully completed the Step Functions Challenge.*
+
+
+## SNS Challenge
+Challenge goal
+Process only orders from US locations (us-west or us-east) that are lab-supplies using a Amazon SNS target (Orders). Similar to the previous use case, but using SNS.
+
+## Step 1: Implement an EventBridge rule to target SNS
+
+Use the EventBridge Console to:
+1. Add a rule to the Orders event bus with the name USLabSupplyRule
+2. With an event pattern to match events with a detail location in us-west or us-east, and a detail category with lab-supplies.
+3. Target the Orders SNS topic
+
+## Step 2: Send test US Orders events
+One of the following events should match the event rule pattern and one should not. Use CloudWatch Logs to verify events that were successfully sent to EventBridge but were not delivered to the target.
+
+Using the Event Generator, send the following Order Notification events from the source com.aws.orders:
+{ "category": "lab-supplies", "value": 415, "location": "us-east" }
+{ "category": "office-supplies", "value": 1050, "location": "us-west", "signature": [ "John Doe" ] }
+
+## Step 3: Verify SNS topic
+If the event sent to the Orders event bus matches the pattern in your rule, then the event will be sent to the Orders SQS Queue (via Orders SNS Topic).
+1. Open the AWS Management Console for SQS  in a new tab or window, so you can keep this step-by-step guide open.
+2. On the SQS homepage, select the Orders queue.
+3. Select the Send and receive messages button.
+4. Select Poll for Messages and verify the first message was delivered and the second was not.
+5. To clean up, select the event, select the Delete button, and select the Delete button again on the Delete Messages confirmation dialog.
+
+Congratulations! You have successfully completed the SNS Challenge.
+
+## Next steps
+OK, now that you have explored EventBridge Rule patterns, let's look at how we can generate events on a scheduled basis.
+
+## Scheduling expressions for rules
+
+You can create rules that self-trigger on an automated schedule in EventBridge using cron or rate expressions. All scheduled events use UTC time zone and the minimum precision for schedules is 1 minute.
+
+EventBridge supports cron expressions and rate expressions. Rate expressions are simpler to define but don't offer the fine-grained schedule control that cron expressions support. For example, with a cron expression, you can define a rule that triggers at a specified time on a certain day of each week or month. In contrast, rate expressions trigger a rule at a regular rate, such as once every hour or once every day.
+
+Let's give it a try!
+
+## Step 1: Create a scheduled Orders Reconciliation rule
+1. Open the AWS Management Console for EventBridge  in a new tab or window, so you can keep this step-by-step guide open.
+2. On the EventBridge homepage, select Rules from the left-hand menu.
+3. Select the default event bus and click the Create rule button.
+4. On the Create rule page:
+    4.1 Add OrdersReconciliation as the Name of the rule
+    4.2 Add Runs reconciliation routine on orders every minute Monday to Friday for Description
+    4.3 Select Schedule for Rule type
+    4.4 As we are still using the previous scheduler, you should click on the Continue to create rule button.
+5. In Schedule Pattern select the left option, which represnts a cron expression.
+6. Add ***"* * ? * MON-FRI *"** in the Cron expression.
+
+This will schedule a message to be delivered every minute, Monday through Friday.
+
+7. Configure your target to be a CloudWatch log group
+    7.1 Name the log group /aws/events/orders_reconciliation
+8. Click Next and finish walking through the rest of the walk-through to create the rule.
+
+## Step 2: Verify scheduled message delivery
+1. Open the AWS Management Console for CloudWatch  in a new tab or window, so you can keep this step-by-step guide open.
+2. Choose Log groups in the left navigation and select the /aws/events/orders_reconciliation log group.
+3. After a few minutes your streams for /aws/events/orders_reconciliation should look similar to this:
+
+Congratulations! You have just completed your first scheduled expression for an Amazon EventBridge rule. Next, we are going to explore how to create EventBridge partner event sources.
+
+
+## Event-driven with Lambda
+When a function is invoked asynchronously, Lambda sends the event to an internal queue. A separate process reads events from the queue and executes your Lambda function.
+
+A common event-driven architectural pattern is to use a queue or message bus for communication. This helps with resilience and scalability. Lambda asynchronous invocations can put an event or message on Amazon Simple Notification Service (SNS), Amazon Simple Queue Service (SQS), or Amazon EventBridge for further processing.
+
+With Destinations, you can route asynchronous function results as an execution record to a destination resource without writing additional code. An execution record contains details about the request and response in JSON format including version, timestamp, request context, request payload, response context, and response payload. For each execution status such as Success or Failure you can choose one of four destinations: another Lambda function, SNS, SQS, or EventBridge.
+
+Module information
+This module extends the AWS Step Functions challenge you completed in Working with EventBridge rules. If you haven't completed this, do so now. The Inventory function and the Inventory event bus have already been create for you.
+
+## Step 1: Configure the Inventory event bus
+Configure the Inventory event bus as a successful Lambda Destination on InventoryFunction Lambda function
+1. Open the AWS Management Console for Lambda in a new tab or window, so you can keep this step-by-step guide open.
+2. Select Functions in the left navigation.
+3. Enter InventoryFunction in the Lambda function filter. And select the function name filter when it shows up.
+4. Select the Lambda function from the list of functions.
+5. In the Lambda function Designer, choose Add destination.
+6. In the Add destination dialogue box:
+    6.1 For Condition, select On success.
+    6.2 For Destination type, select EventBridge event bus.
+    6.3 For Destination, select Inventory.
+7. Choose Save.
+
+The Lambda function must have permissions through its IAM Execution Policy to access the success and failure Destinations. For simplicity, the function's IAM Execution Policy has been configured with access to EventBridge and SQS (see below).
+
+## Step 2: Create the "Order Processed" rule for the Inventory function
+The Inventory function subscribes to events that signal the processing of the order has been completed successfully. The OrderProcessed event is published by the Step Function you created in the AWS Step Functions challenge.
+
+1. Create a rule on the Orders event bus called OrderProcessingRule
+2. Add a description: Handles orders successfully processed by the Order Processing state machine
+3. Define a rule pattern
+{
+    "source": [
+        "com.aws.orders"
+    ],
+    "detail-type": [
+        "Order Processed"
+    ]
+}
+
+4. Configure the rule target to point to the Inventory function.
+
+## Step 3: Testing the end-to-end functionality
+To test the end-to-end functionality, you will publish a message to the Orders EventBridge event bus with an EU location. This will trigger the following sequence of event-driven actions:
+
+1. The message containing an EU location triggers the rule on the Orders event bus, which you created in the previous module, to route the message to the OrderProcessing StepFunctions workflow.
+2. The OrderProcessing StepFunctions workflow processes the order and publishes an event to the Orders event bus.
+3. The OrderProcessingRule that you just created on the Orders event bus routes the event to the Inventory function.
+4. On successful execution, the InventoryFunction function sends an event to the Inventory event bus through the On success Lambda destination.
+5. The InventoryDevRule rule on the Inventory event bus logs the event to the /aws/events/inventory CloudWatch Logs log group.
+
+# Let's test it!
+1. Select the EventBridge tab in the Event Generator .
+2. Make sure that the Event Generator is populated with the following (if you clicked the link above then you should see this pre-populated)
+    2.1 Event Bus selected to Orders
+    2.2 Source should be com.aws.orders
+    2.3 In the Detail Type add Order Notification
+    2.4 JSON payload for the Detail Template should be:
+        {
+         "category": "office-supplies",
+         "value": 1200,
+         "location": "eu-west"
+        }
+3. Click Publish.
+4. Open the AWS Management Console for CloudWatch  in a new tab or window, so you can keep this step-by-step guide open.
+5. Choose Log groups in the left navigation.
+6. Enter /aws/events/inventory in the Log Group Filter and choose /aws/events/inventory log group.
+7. In the list of Log Streams, choose the Log Stream.
+8. Expand the Log Stream record to verify success and explore the event schema.
+
+Congratulations! You have successfully used Lambda Destinations to send a message to the Inventory EventBridge event bus, following message processing through EventBridge, Step Functions, and SNS.
