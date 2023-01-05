@@ -150,4 +150,8 @@ If the event sent to the Orders event bus matches the pattern in your rule, then
 
 Congratulations! You have successfully created your first custom event. We will now present additional challenges for you to complete. A description of the goal, sample data, and verification steps have been provided, but it is up to you to write the correct event pattern. Remember, use CloudWatch Logs to troubleshoot your rule implementation, if you are not able to verify your rule.
 
+## Step Functions Challenge
+*Challenge goal*
+Process only orders from locations in the EU (eu-west or eu-east) using a AWS Step Functions target (OrderProcessing). In this use case, we are demonstrating how a Step Function execution can be triggered to process orders as they are published by the Orders bus.
 
+## Step 1: Implement an EventBridge rule to target Step Functions
