@@ -132,4 +132,22 @@ Process all events for source com.aws.orders via an Amazon EventBridge API Desti
 6. Select your rule target:
     6.1 Select EventBridge API destination as the target type.
 6.2 Select api-destination from the list of existing API destinations
+7. Click Next and finish walking through the rest of the walk-through to create the rule.
+
+## Step 4: Send test Orders event
+Below is sample data to test your rule, with a link to open the sample data in the Event Generator. If you don't remember how to use Event Generator to send an event, please refer to the previous section.
+
+Using the Event Generator, send the following Order Notification events from the source com.aws.orders:
+    { "category": "lab-supplies", "value": 415, "location": "us-east" }
+
+## Step 5: Verify API Destination
+If the event sent to the Orders event bus matches the pattern in your rule, then the event will be sent to an API Gateway REST API endpoint.
+
+1. Open the AWS Management Console for CloudWatch Log Groups  in a new tab or window, so you can keep this step-by-step guide open.
+2. Select the Log group with an API-Gateway-Execution-Logs prefix.
+3. Select the Log stream.
+4. Toggle the log event to verify the basic authorization was successful and the API responds with a 200 status.
+
+Congratulations! You have successfully created your first custom event. We will now present additional challenges for you to complete. A description of the goal, sample data, and verification steps have been provided, but it is up to you to write the correct event pattern. Remember, use CloudWatch Logs to troubleshoot your rule implementation, if you are not able to verify your rule.
+
 
