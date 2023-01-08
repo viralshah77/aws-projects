@@ -109,19 +109,19 @@ Copy the Instance Id of both the instances and ensure both the Instances are in 
 10. Click on "Test" to test the Lambda Function . Give the event name as "TestEC2Start" and click on Test -- ***This will start the 2 EC2 instances***
 11. Go to EC2 instance and check the statuses - it should eventually Start for both the instances and the Instance State should be in "Running"
 
-6. Create an event which will get executed in case an Instance gets Stopped and will get restart on its own 
-	6.1 Click on "Create Function" and "Author From Scratch" 
-	6.2 Select Function Name as "EC2Protect"
-	6.3 Select Python(latest function) under Runtime 
-	6.4 Under "Change default Execution Role", select "Use an existing Role" and select "EC2StartStopLambdaRole" which we have created earlier
-	6.5 Create Function
-	6.6 Under lambda_function.py, right click and select Open -- and paset the below Lambda 
-	6.1 Click on "Create Function" and "select From Scratch" 
-	6.2 Select Function Name as "EC2Start"
-	6.3 Select Python(latest function) under Runtime 
-	6.4 Under "Change default Execution Role", select "Use an existing Role" and select "EC2StartStopLambdaRole" which we have created earlier
-	6.5 Create Function
-	6.6 Under lambda_function.py, right click and select Open -- and paset the below Lambda 
+###### Create an event which will get executed in case an Instance gets Stopped and will get restart on its own 
+1. Click on "Create Function" and "Author From Scratch" 
+2. Select Function Name as "EC2Protect"
+3. Select Python(latest function) under Runtime 
+4. Under "Change default Execution Role", select "Use an existing Role" and select "EC2StartStopLambdaRole" which we have created earlier
+5. Create Function
+6. Under lambda_function.py, right click and select Open -- and paset the below Lambda 
+7. Click on "Create Function" and "select From Scratch" 
+8. Select Function Name as "EC2Start"
+9. Select Python(latest function) under Runtime 
+10. Under "Change default Execution Role", select "Use an existing Role" and select "EC2StartStopLambdaRole" which we have created earlier
+11. Create Function
+12. Under lambda_function.py, right click and select Open -- and paset the below Lambda 
 		import boto3
 		import os
 		import json
@@ -134,32 +134,48 @@ Copy the Instance Id of both the instances and ensure both the Instances are in 
     			instances=[ event['detail']['instance-id'] ]
     			ec2.start_instances(InstanceIds=instances)
     			print ('Protected instance stopped - starting up instance: '+str(instances))
-	6.7 Click on Deploy
-	6.8 Create an event in ***EventBridge*** 
-	6.9 Under "Amazon EventBridge" , select "Create Rule"  
-	6.10 Name the Rule as "EC2Protect" , provide the Description as "Start Protected Instance" 
-	6.11 Under Rule type, select "Rule with an event pattern" , click Next 
-	6.12 EventSource should be "AWS events or EventBridge partner events
-	6.13 Under "Event Pattern" under
-		Event Source --> AWS services
-		AWS Service --> EC2
-		Event type --> EC2 Instance State-change Notification
-		Specific states --> Stopped
-		Specific instance Id(s) -- (Provide any one of the Instance Id" 	
-	6.14 Under Sample events , select "EC2 Instance State-change Notification
-	6.15 Click Next
-	6.16 Under Target types --> AWS Service --> select "Lambda function" . Function --> EC2Protect 
-	6.17 Click Next. Click on "Create Rule"
+13. Click on Deploy
+14. Create an event in ***EventBridge*** 
+15. Under "Amazon EventBridge" , select "Create Rule"  
+16. Name the Rule as "EC2Protect" , provide the Description as "Start Protected Instance" 
+17. Under Rule type, select "Rule with an event pattern" , click Next 
+18. EventSource should be "AWS events or EventBridge partner events
+19. Under "Event Pattern" under
+	Event Source --> AWS services
+	AWS Service --> EC2
+	Event type --> EC2 Instance State-change Notification
+	Specific states --> Stopped
+	Specific instance Id(s) -- (Provide any one of the Instance Id" 
+20. Under Sample events , select "EC2 Instance State-change Notification
+21. Click Next
+22. Under Target types --> AWS Service --> select "Lambda function" . Function --> EC2Protect 
+23. Click Next. Click on "Create Rule"
 	
-###### 7. Testing
-	7. Go to EC2 instabce and stop the instance whose Instance Id is been provided in the Eventbridge 
-	Note that the event will not allow the instane to be in Stopped state and will restart immediately and will be in Running state 
+###### Testing
+Go to EC2 instabce and stop the instance whose Instance Id is been provided in the Eventbridge 
+Note that the event will not allow the instane to be in Stopped state and will restart immediately and will be in Running state 
 
 ###### Check the CloudWatch Logs 
-	Go to CloudWatch , under "og groups", select /aws/lambda/Ec2Protect 
-	check the Log evens and it will detail you the event which got generated 
+Go to CloudWatch , under "og groups", select /aws/lambda/Ec2Protect 
+Check the Log evens and it will detail you the event which got generated 
 	
 
-## Create a Scheduled event which will get executed in case an Instance gets Stopped and will get restart on its own 
+##### Create a Scheduled event which will stop a particular EC2 Instance at a particualar time
+1. Click on EventBridge, Rules , Create Rule
+2. Select the Name as "EC2Stop" , Rule type as "Schedule". Click Next 
+3. Schedule pattern should be "A fine grained schedule...." 
+4. Under cron expression, select ener the day/ date/ hour/ mins when you want to stop an instance (be advise this is UTC time Zone)
+5. Select "AWS Service", Target as "Lambda Function"
+6. Function as "EC2Stop"
+7. Click Next, Next and "Create Rule"
 
-	7.
+At a particular time mentioned above, an event will be triggered and both the EC2 instances status will be moved to "Stopped" state 
+However, since we already have another event which will protect an event to be stopped, hence that Protect event will restart the Instance and will make it into "Running" state 
+
+
+## Clean up 
+Delete all 3 Lambda functions 
+Delete bot the Event Rules
+Delete the IAM Policy
+Delete the Role 
+Stop the EC2 Instances 
