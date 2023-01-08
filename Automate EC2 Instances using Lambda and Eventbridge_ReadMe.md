@@ -12,14 +12,15 @@ In this project , will  create 2 EC2 instances , 3 Lambda functions and 2 Eventb
 
 ## Steps : 
 1. Create 1 EC2 instance named "TestEC2Instance_1"
+
 1.1 Go to "EC2 console and select "Launch instance"
 1.2 Enter the name as "TestEC2Instance_1" and select "Amazon Linux 2" free tier AMI 
 1.3 Keep rest all configuration as it is and click "Launch Instance"
 
 2. Create 1 EC2 instance named "TestEC2Instance_2"
 2.1 Go to "EC2 console and select "Launch instance"
-2.2 Enter the name as "TestEC2Instance_2" and select "Amazon Linux 2" free tier AMI 
-2.3 Keep rest all configuration as it is and click "Launch Instance"
+4.2 Enter the name as "TestEC2Instance_2" and select "Amazon Linux 2" free tier AMI 
+5.3 Keep rest all configuration as it is and click "Launch Instance"
 
 3. Copy the Instance Id of both the instances and ensure both the Instances are in "Running" state 
 
