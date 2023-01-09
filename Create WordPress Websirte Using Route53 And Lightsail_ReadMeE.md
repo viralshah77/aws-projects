@@ -54,6 +54,26 @@ This blog is mainly to highlight the architecture on how Viral created a Wordpre
 7. Paste the UserId/ Pwd in the Login Page of WordPress
 
 
+### Create/ Register a new domain in Amazon Route53 and point it Amazon Lightsail instance 
+#### Amazon Route53 is a domain name registrar or also called as domain name provider is used to create a domain (in our case, we created "nehacouture.com") , will need to then transfer this domain to Lightsail for it to converse it with WordPress
+
+1. On the AWS Management Console, select Route 53 and click on "Register domain"
+2. Under "Choose a domain Name", enter the domain name which you want to register, if that domain is already registered, it will advise you with alternate domain. In our case, I had already registered "nehacouture.com" and tried to create new one with the same name , see the results below 
+
+![image](https://user-images.githubusercontent.com/73116712/211263846-9a6e7a6c-6b81-4888-b877-ba3e2198ffda.png)
+
+3. Once you select your domain name, click on "Add to cart" and Continue 
+4.Enter the contact and payment details and Click on "Complete Order". In our case, see details below 
+![image](https://user-images.githubusercontent.com/73116712/211263369-bd16fee6-be9f-4b04-ae0b-6ac1c8776a40.png)
+
+5. Being based out of India, I wanted to have ".in" instead of ".com" TLD(Top Level Domain) - however since "in" charges were higher than ".com" TLD, slected the latter one . Plus ".com" is usually used for commercial websites and also the most popular extension 
+
+![image](https://user-images.githubusercontent.com/73116712/211264744-49259241-4738-42fd-9d1f-20fbbee45237.png)
+
+![image](https://user-images.githubusercontent.com/73116712/211264679-c83d1708-8ce5-4345-84cf-61bf5f3237d5.png)
+
+6. 
+
 
 
 
