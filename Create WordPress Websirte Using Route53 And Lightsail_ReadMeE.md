@@ -54,8 +54,8 @@ This blog is mainly to highlight the architecture on how Viral created a Wordpre
 7. Paste the UserId/ Pwd in the Login Page of WordPress
 
 
-### Create/ Register a new domain in Amazon Route53 and point it Amazon Lightsail instance 
-#### Amazon Route53 is a domain name registrar or also called as domain name provider is used to create a domain (in our case, we created "nehacouture.com") , will need to then transfer this domain to Lightsail for it to converse it with WordPress
+### Register a new domain in Amazon Route53  
+#### Amazon Route53 is a domain name registrar or also called as domain name provider is used to create a domain (in our case, we created "nehacouture.com"). Once the domain is registered, will need then need to transfer it to Lightsail for it to converse it with WordPress
 
 1. On the AWS Management Console, select Route 53 and click on "Register domain"
 2. Under "Choose a domain Name", enter the domain name which you want to register, if that domain is already registered, it will advise you with alternate domain. In our case, I had already registered "nehacouture.com" and tried to create new one with the same name , see the results below 
@@ -72,7 +72,24 @@ This blog is mainly to highlight the architecture on how Viral created a Wordpre
 
 ![image](https://user-images.githubusercontent.com/73116712/211264679-c83d1708-8ce5-4345-84cf-61bf5f3237d5.png)
 
-6. 
+
+### Point the Route53 domain Amazon Lightsail instance 
+#### Need to complete below steps to configure the two most common DNS records, address and canonical name, in Route 53 to point our domain to a Lightsail instance.
+
+1. Under Route 53, select Hosted Zones  
+2. Here we need to create A, AAAA, CNAME and TXT Records then Create Records
+3. Once the details are entered , you will see the same under Lightsail, "Domains & DNS"
+4. Under DNS Zone, select the link "nehacouture.com"
+5. Will see following records created 
+
+![image](https://user-images.githubusercontent.com/73116712/211276802-f4e38ce1-8c60-41de-a88b-0ab5effbf28a.png)
+
+![image](https://user-images.githubusercontent.com/73116712/211276893-8583c2e5-73a4-4c5e-8a2a-e202cdb10063.png)
+
+![image](https://user-images.githubusercontent.com/73116712/211277021-51cddd8c-1a34-442d-a38f-e680fcfd6b43.png)
+
+Above steps will help in registering a domain and in Route 53, transfer it to Lightsail which can then be incorporated with Bitnami Wordpress for designing Websites 
+please click on "http://nehacouture.com/" -- currently only home page is created , this site will see progress and will be Live soon for users to select their favorite wardrobe and pay it via multiple payment methods , post which , items will be shipped to their mentioned addresses 
 
 
 
