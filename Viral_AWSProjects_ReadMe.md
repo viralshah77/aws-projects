@@ -7,14 +7,14 @@
 ## Create-CloudFormation-Template-Using-YAML
 ReadMe --> https://github.com/viralshah77/aws-projects/blob/Create-CloudFormation-Template-Using-YAML/CloudFormationTemplate_README.md
 
-Video --> (In Progress)
+Video --> https://viral-aws-projects.s3.amazonaws.com/CloudFormation+template+using+YAML.mp4
 
 =================================================================================
 
 ## Automate-EC2-Instances-using-Lambda-and-Eventbridge
 ReadMe --> https://github.com/viralshah77/aws-projects/blob/Automate-EC2-Instances-using-Lambda-and-Eventbridge/Automate%20EC2%20Instances%20using%20Lambda%20and%20Eventbridge_ReadMe.md
 
-Video --> (In Progress)
+Video --> https://viral-aws-projects.s3.amazonaws.com/Automate+EC2+Control+using+Lambda+and+Eventbridge.mp4
 
 =================================================================================
 
