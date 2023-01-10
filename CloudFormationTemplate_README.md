@@ -1,9 +1,11 @@
 # Create a CloudFormation template using YAML 
 #### Templates are created in YAML using references from https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html
-### Using the template, will create 2 AWS services - S3 bucket and EC2 instance 
+
+## Story 
+### In this project, we will be utilizing CloudFormation template and YAML script to create S3 and EC2 instances. 
 
 ## Steps : 
-1. Create a YAML script using Visual Studio or any other IDE 
+1. Create a YAML script using Visual Studio or any other IDE -- this script will have details of creating S3 bucket and an EC2 instance
 
 ![image](https://user-images.githubusercontent.com/73116712/211220344-f6bb752c-77f7-478f-b0ae-b0d11b4cd81f.png)
 
