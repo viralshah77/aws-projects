@@ -27,11 +27,12 @@ In this project , will  create 2 EC2 instances , 3 Lambda functions and 2 Eventb
 Copy the Instance Id of both the instances and ensure both the Instances are in "Running" state 
 
 ###### Create IAM Role 
-1. Create an IAM role named "EC2StartStopLambdaRole" for Lambda function to stop/ start EC2 instances as well as ability to write logging information into CloudWatch Logs 
-2. Under IAM Console, click on Roles and "Create Role"
-3. Select "AWS Service" and then select Lambda. Click on Next 
-4. Click on "Create Policy", Select JSON and provide the policy details in there
-	{
+Create an IAM role named "EC2StartStopLambdaRole" for Lambda function to stop/ start EC2 instances as well as ability to write logging information into CloudWatch Logs 
+1. Under IAM Console, click on Roles and "Create Role"
+2. Select "AWS Service" and then select Lambda. Click on Next 
+3. Click on "Create Policy", Select JSON and provide the policy details in there
+
+{
 	    "Version": "2012-10-17",
 	    "Statement": [
 	      {
@@ -56,7 +57,7 @@ Copy the Instance Id of both the instances and ensure both the Instances are in 
 
 5. Click "Next"
 6. Under Policy Name , type "LambdaStartAndStop" and click on "CreatePolicy"
-7. Go back to previous tab where we create IAM role and select "LambdaStartAndStop" policy we just create. Click on Next 
+7. Go back to previous tab where we created the IAM role and select "LambdaStartAndStop" policy we just created. Click on Next 
 8. Name the role as "EC2StartStopLambdaRole". So now Lambda can assume this role and can stop/ start Lambda function 
 
 ###### Create a Lambda function to ***Stop instances***
